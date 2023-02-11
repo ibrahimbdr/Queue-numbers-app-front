@@ -18,7 +18,7 @@ const Home = () => {
         {showMsg&&<><div className='flex justify-center w-fit mx-auto'><h1 className='text-center mt-10 text-2xl md:text-4xl p-1 animate-typeWriter overflow-hidden border-r-8 border-gray-500 whitespace-nowrap my-0 mx-auto tracking-widest'>Do You Have an Appointment?</h1></div>
                     {showBtns&&<div className='flex justify-center mt-10'>
                         <Link to="/waiting" className='text-3xl md:text-5xl border border-gray-800 hover:bg-gray-800 hover:text-white mx-5 w-32 text-center rounded px-4 py-2 transition-all'>YES</Link>
-                        <Link to="/login-register" className='text-3xl md:text-5xl border border-gray-800 bg-gray-800 text-white hover:bg-white hover:text-gray-800 mx-5 w-32 text-center rounded px-4 py-2 transition-all'>NO</Link>
+                        <Link to="/login" className='text-3xl md:text-5xl border border-gray-800 bg-gray-800 text-white hover:bg-white hover:text-gray-800 mx-5 w-32 text-center rounded px-4 py-2 transition-all'>NO</Link>
                     </div>}
                 </>
         }

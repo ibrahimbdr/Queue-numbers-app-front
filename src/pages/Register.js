@@ -57,7 +57,7 @@ const Register = () => {
                             </label>
                             <input
                             id="2" 
-                            className="peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:ring-2 focus:ring-gray-400" 
+                            className="peer h-10 w-full rounded-md bg-gray-50 px-4 font-base outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:ring-2 focus:ring-gray-400" 
                             type="text" 
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -66,7 +66,7 @@ const Register = () => {
                             </label>
                             <input
                             id="3" 
-                            className="peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:ring-2 focus:ring-gray-400" 
+                            className="peer h-10 w-full rounded-md bg-gray-50 px-4 font-base outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:ring-2 focus:ring-gray-400" 
                             type="text" 
                             value={phone2}
                             onChange={(e) => setPhone2(e.target.value)}

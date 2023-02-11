@@ -1,10 +1,14 @@
 import React from 'react'
-import ReactToPrint from 'react-to-print';
 import { useReactToPrint } from 'react-to-print';
 import { ComponentToPrint } from '../components/ComponentToPrint';
+import { useNavigate } from 'react-router-dom';
 
 
 const Print = () => {
+    const navigate = useNavigate();
+    setTimeout(() => {
+        navigate('/');
+    }, 20000)
     const componentRef = React.useRef();
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
