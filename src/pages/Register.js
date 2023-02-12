@@ -37,13 +37,14 @@ const Register = () => {
             console.log(customer);
             console.log(customer.token);
             localStorage.setItem('token', customer.token)
+            navigate('/print2')
         } 
         fetchData2()
         .catch(console.error);
         
         
         
-        navigate('/print2')
+        
     }
         
   return (
