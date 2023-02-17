@@ -1,59 +1,45 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../axios config/axiosInstance";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const Login = () => {
+  // navigate instance to call after login to redirect to the next page
   const navigate = useNavigate();
+
+  // state for Showing YES and NO options when the page reders after time is finished
   const [showMsg, setShowMsg] = React.useState(false);
+
+  // To apply the effect of showing YES and NO after displaying "Do you have a login?"
   setTimeout(() => {
     setShowMsg(true);
   }, 2500);
+
+  // State responsible for showing and hiding login Div
   const [signDiv, setSignDiv] = React.useState(3);
-  const [name, setName] = React.useState("");
-  const [phone1, setPhone1] = React.useState("");
-  const [phone2, setPhone2] = React.useState("");
-  const handleOnSubmitLogin = (e) => {
-    e.preventDefault();
-    console.log(JSON.stringify(phone1));
 
-    // axiosInstance.post(`/customer/login`)
-    // .then((res) => {
-    // }).catch((err) => {
-    //     console.log(err);
-    // })
+  // For getting Previous registered phones from database to validate registered phones in the form
+  const [phoneArr, setPhoneArr] = React.useState([]);
 
-    const fetchData = async () => {
-      const response = await fetch("http://localhost:4000/customer/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone: phone1 }),
+  // calling api for getting phone numbers from database
+  React.useEffect(() => {
+    axiosInstance
+      .get("/customer/")
+      .then((res) => {
+        console.log(res.data);
+        let arr = [];
+        let arr2 = [];
+        res.data.forEach((customer) => {
+          arr.push(customer.phone);
+          arr2.push(customer.name);
+        });
+        setPhoneArr(arr);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-      const customer = await response.json();
-      console.log(customer);
-      console.log(customer.token);
-      localStorage.setItem("token", customer.token);
-    };
-    fetchData().catch(console.error);
-
-    const fetchData2 = async () => {
-      const response = await fetch("http://localhost:4000/appointment", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      });
-      const appointment = await response.json();
-      console.log(appointment);
-      if (appointment == null) {
-        setSignDiv(2);
-      } else {
-        navigate("/print");
-      }
-    };
-
-    fetchData2().catch(console.error);
-  };
+  }, []);
 
   return (
     <div className="flex flex-col justify-center items-center w-fit mx-auto">
@@ -78,31 +64,69 @@ const Login = () => {
           </div>
           {signDiv === 1 && (
             <div className=" w-72 md:w-80 lg:w-96 flex flex-col items-center">
-              <form
-                onSubmit={handleOnSubmitLogin}
-                className="w-full shadow-xl bg-gray-300 p-8 rounded"
-              >
-                <h2 className="text-xl font-medium">LOGIN</h2>
-                <label
-                  htmlFor="1"
-                  className="block w-full mt-4 pb-1 text-sm font-medium text-gray-500 transition-all duration-200 ease-in-out group-focus-within:text-gray-400"
+              <div className="w-full shadow-xl bg-gray-300 p-8 rounded">
+                {/* Using formik package for login form */}
+                <Formik
+                  initialValues={{ phone: "" }}
+                  validationSchema={Yup.object({
+                    phone: Yup.string()
+                      .required("Required")
+                      // Validating the phone is registered before
+                      .oneOf(phoneArr, "Phone number is not registered"),
+                  })}
+                  onSubmit={(values, { setSubmitting }) => {
+                    setSubmitting(false);
+                    // connecting to api and sending post request to get the login token
+                    axiosInstance
+                      .post(
+                        "/customer/login",
+
+                        JSON.stringify({ phone: values.phone }),
+                        {
+                          headers: {
+                            "Content-Type": "application/json",
+                          },
+                        }
+                      )
+                      .then((res) => {
+                        console.log(res.data);
+                        console.log("token-customer", res.data.token);
+                        localStorage.setItem("token-customer", res.data.token);
+                        if (res.data) navigate("/print2");
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                  }}
                 >
-                  Phone Number
-                </label>
-                <input
-                  id="1"
-                  className="peer h-10 w-full rounded-md bg-gray-50 px-4 font-base outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:ring-2 focus:ring-gray-400"
-                  type="text"
-                  value={phone1}
-                  onChange={(e) => setPhone1(e.target.value)}
-                />
-                <button
-                  type="submit"
-                  className="text-2xl my-5 rounded px-4 py-2 transition-all  border border-gray-800 hover:bg-gray-800 hover:text-white"
-                >
-                  Submit
-                </button>
-              </form>
+                  {({ isSubmitting }) => (
+                    <Form>
+                      <div className="my-4 w-full">
+                        <label htmlFor="phone" className="block">
+                          phone
+                        </label>
+                        <Field
+                          type="phone"
+                          name="phone"
+                          className="h-10 rounded w-full p-1"
+                        />
+                        <ErrorMessage name="phone">
+                          {(msg) => (
+                            <div className="text-sm text-red-500">{msg}</div>
+                          )}
+                        </ErrorMessage>
+                      </div>
+                      <button
+                        type="submit"
+                        className="text-2xl my-5 rounded px-4 py-2 transition-all  border border-gray-800 hover:bg-gray-800 hover:text-white"
+                        disabled={isSubmitting}
+                      >
+                        Login
+                      </button>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
             </div>
           )}
           {signDiv === 2 && (
