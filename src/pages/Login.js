@@ -65,6 +65,7 @@ const Login = () => {
           {signDiv === 1 && (
             <div className=" w-72 md:w-80 lg:w-96 flex flex-col items-center">
               <div className="w-full shadow-xl bg-gray-300 p-8 rounded">
+                <h2 className="text-xl font-medium">LOGIN</h2>
                 {/* Using formik package for login form */}
                 <Formik
                   initialValues={{ phone: "" }}
