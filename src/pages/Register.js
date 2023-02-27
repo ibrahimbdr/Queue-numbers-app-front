@@ -12,7 +12,9 @@ const Register = () => {
   }, 2500);
   const [phoneArr, setPhoneArr] = React.useState([]);
   const [nameArr, setNameArr] = React.useState([]);
+  const [registered, setRegistered] = React.useState(false);
   React.useEffect(() => {
+    if (registered) navigate("/print");
     axiosInstance
       .get("/customer/")
       .then((res) => {
@@ -29,7 +31,7 @@ const Register = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [registered]);
 
   return (
     <div className="flex flex-col justify-center items-center w-fit mx-auto">
@@ -86,7 +88,7 @@ const Register = () => {
                   console.log(res.data);
                   console.log("token-customer", res.data.token);
                   localStorage.setItem("token-customer", res.data.token);
-                  if (res.data) navigate("/print2");
+                  if (res.data.token) setRegistered(true);
                 })
                 .catch((err) => {
                   console.log(err);

@@ -93,7 +93,7 @@ const Login = () => {
                         console.log(res.data);
                         console.log("token-customer", res.data.token);
                         localStorage.setItem("token-customer", res.data.token);
-                        if (res.data) navigate("/print2");
+                        if (res.data) navigate("/print");
                       })
                       .catch((err) => {
                         console.log(err);
@@ -133,7 +133,7 @@ const Login = () => {
           {signDiv === 2 && (
             <button
               type="button"
-              onClick={() => navigate("/print2")}
+              onClick={() => navigate("/print")}
               className="text-2xl my-5 rounded px-4 py-2 transition-all  border border-gray-800 hover:bg-gray-800 hover:text-white"
             >
               Register an Appointment

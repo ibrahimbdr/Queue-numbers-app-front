@@ -6,7 +6,6 @@ import Login from "./pages/Login";
 import Waiting from "./pages/Waiting";
 import Print from "./pages/Print";
 import Register from "./pages/Register";
-import Print2 from "./pages/Print2";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -19,7 +18,6 @@ function App() {
           <Route path="/register" exact element={<Register />} />
           <Route path="/waiting" exact element={<Waiting />} />
           <Route path="/print" element={<Print />} />
-          <Route path="/print2" element={<Print2 />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
